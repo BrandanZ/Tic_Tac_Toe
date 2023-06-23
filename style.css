@@ -16,3 +16,20 @@
     font-size: 2em;
     cursor: pointer;
 }
+
+#game-over-message {
+    text-align: center;
+    font-size: 2em;
+    margin-top: 20px;
+}
+
+#restart-button {
+    display: block;
+    width: 100px;
+    margin: 20px auto;
+    padding: 10px;
+    font-size: 1em;
+    text-align: center;
+    background-color: #4CAF50; /* Green */
+    color: white;
+}

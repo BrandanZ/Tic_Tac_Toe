@@ -39,30 +39,73 @@ const GameController = (() => {
     let currentPlayer = null;
     let player1 = Player('Player 1', 'X');
     let player2 = Player('Player 2', 'O');
-  
-    const startGame = () => {
-      currentPlayer = player1;
-      GameBoard.resetBoard();
-      GameBoard.render();
-      Array.from(document.querySelectorAll('.cell')).forEach(cell => {
-        cell.addEventListener('click', playTurn, { once: true });
-      });
+
+    // Winning combinations
+    const winCombinations = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6]
+    ];
+
+    const checkWin = (player) => {
+        const board = GameBoard.getBoard();
+        return winCombinations.some(combination =>
+        combination.every(index => board[index] === player.getMark())
+        );
     };
-  
-    const playTurn = (event) => {
-      const index = Array.from(document.querySelector('#game-board').children).indexOf(event.target);
-      if (GameBoard.setMark(index, currentPlayer.getMark())) {
-        GameBoard.render();
-        switchPlayer();
-      }
+
+    const checkTie = () => {
+        const board = GameBoard.getBoard();
+        return board.every(cell => cell !== null);
     };
-  
+
+    const gameOver = (message) => {
+        const gameOverMessage = document.querySelector('#game-over-message');
+        const restartButton = document.querySelector('#restart-button');
+        gameOverMessage.textContent = message;
+        gameOverMessage.hidden = false;
+        restartButton.hidden = false;
+    };
+
     const switchPlayer = () => {
-      currentPlayer = (currentPlayer === player1) ? player2 : player1;
+        currentPlayer = (currentPlayer === player1) ? player2 : player1;
     };
-  
-    return { startGame, playTurn };
-  })();
+    
+    const playTurn = (event) => {
+        const index = Array.from(document.querySelector('#game-board').children).indexOf(event.target);
+        if (GameBoard.setMark(index, currentPlayer.getMark())) {
+          GameBoard.render();
+    
+          if (checkWin(currentPlayer)) {
+            gameOver(`${currentPlayer.getName()} wins!`);
+          } else if (checkTie()) {
+            gameOver('The game is a tie!');
+          } else {
+            switchPlayer();
+          }
+        }
+    };
+
+    const startGame = () => {
+        currentPlayer = player1;
+        GameBoard.resetBoard();
+        GameBoard.render();
+        Array.from(document.querySelectorAll('.cell')).forEach(cell => {
+          cell.addEventListener('click', playTurn, { once: true });
+        });
+        // Hide game over message and restart button
+        document.querySelector('#game-over-message').hidden = true;
+        document.querySelector('#restart-button').hidden = true;
+      };
+    
+      return { startGame, playTurn };
+})();
 
 // To start the game when the script loads:
 window.onload = GameController.startGame;
+document.querySelector('#restart-button').addEventListener('click', GameController.startGame);
