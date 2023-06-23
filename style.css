@@ -36,5 +36,24 @@ h1 {
     text-align: center;
     background-color: #4CAF50; /* Green */
     color: white;
-    outline: none;
+    border: none;
+}
+
+#start-button {
+    display: block;
+    width: 100px;
+    padding: 10px;
+    font-size: 1em;
+    text-align: center;
+    background-color: #4CAF50; /* Green */
+    color: white;
+    border: none;
+}
+
+.input {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
 }
