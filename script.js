@@ -92,6 +92,10 @@ const GameController = (() => {
     };
 
     const startGame = () => {
+        const player1Name = document.querySelector('#player1-name').value;
+        const player2Name = document.querySelector('#player2-name').value;
+        player1 = Player(player1Name, 'X');
+        player2 = Player(player2Name, 'O');
         currentPlayer = player1;
         GameBoard.resetBoard();
         GameBoard.render();
@@ -101,11 +105,11 @@ const GameController = (() => {
         // Hide game over message and restart button
         document.querySelector('#game-over-message').hidden = true;
         document.querySelector('#restart-button').hidden = true;
-      };
+    };
     
       return { startGame, playTurn };
 })();
 
 // To start the game when the script loads:
-window.onload = GameController.startGame;
+document.querySelector('#start-button').addEventListener('click', GameController.startGame);
 document.querySelector('#restart-button').addEventListener('click', GameController.startGame);
