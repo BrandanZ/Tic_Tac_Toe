@@ -91,24 +91,65 @@ const GameController = (() => {
         }
     };
 
+    const cellCheck = () => {
+        const player1Name = document.querySelector('#player1-name').value;
+        const player2Name = document.querySelector('#player2-name').value;
+        const defaultText = 'Add name here...';
+    
+        if (!player1Name || player1Name === defaultText || !player2Name || player2Name === defaultText) {
+            document.querySelector('#player1-name').classList.add('error');
+            document.querySelector('#player2-name').classList.add('error');
+            document.querySelector('#error-message').textContent = 'Please enter names for both players before starting the game.';
+            document.querySelector('#error-message').style.color = 'red';
+        }
+    };
+
+    // Add cellCheck event listener to cells
+    Array.from(document.querySelectorAll('.cell')).forEach(cell => {
+        cell.addEventListener('click', cellCheck);
+    });
+
     const startGame = () => {
         const player1Name = document.querySelector('#player1-name').value;
         const player2Name = document.querySelector('#player2-name').value;
+        const defaultText = "Add name here...";
+        
+        if (!player1Name || player1Name === defaultText || !player2Name || player2Name === defaultText) {
+          document.querySelector('#player1-name').classList.add('error');
+          document.querySelector('#player2-name').classList.add('error');
+          document.querySelector('#error-message').textContent = 'Please enter names for both players before starting the game.';
+          document.querySelector('#error-message').style.color = 'red';
+          return;
+        } else {
+          document.querySelector('#player1-name').classList.remove('error');
+          document.querySelector('#player2-name').classList.remove('error');
+          document.querySelector('#error-message').textContent = '';
+        }
+    
         player1 = Player(player1Name, 'X');
         player2 = Player(player2Name, 'O');
         currentPlayer = player1;
+    
         GameBoard.resetBoard();
         GameBoard.render();
+    
+        // Remove cellCheck event listener from cells and add playTurn event listener
         Array.from(document.querySelectorAll('.cell')).forEach(cell => {
-          cell.addEventListener('click', playTurn, { once: true });
+            cell.removeEventListener('click', cellCheck);
+            cell.addEventListener('click', playTurn, { once: true });
         });
+    
         // Hide game over message and restart button
         document.querySelector('#game-over-message').hidden = true;
         document.querySelector('#restart-button').hidden = true;
     };
-    
-      return { startGame, playTurn };
+  
+      return { cellCheck, startGame, playTurn };
 })();
+
+Array.from(document.querySelectorAll('.cell')).forEach(cell => {
+    cell.addEventListener('click', GameController.cellCheck);
+});
 
 // To start the game when the script loads:
 document.querySelector('#start-button').addEventListener('click', GameController.startGame);
