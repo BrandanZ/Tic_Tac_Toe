@@ -58,6 +58,9 @@ h1 {
     font-size: 20px;
 }
 
-.error {
-    border: 2px solid red;
-  }
+#error-message {
+    color: red;
+    text-align: center;
+    height: 20px;
+    visibility: hidden;
+}

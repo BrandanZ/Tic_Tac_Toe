@@ -97,10 +97,12 @@ const GameController = (() => {
         const defaultText = 'Add name here...';
     
         if (!player1Name || player1Name === defaultText || !player2Name || player2Name === defaultText) {
-            document.querySelector('#player1-name').classList.add('error');
-            document.querySelector('#player2-name').classList.add('error');
-            document.querySelector('#error-message').textContent = 'Please enter names for both players before starting the game.';
-            document.querySelector('#error-message').style.color = 'red';
+            document.querySelector('#player1-name').style.borderColor = 'red';
+            document.querySelector('#player2-name').style.borderColor = 'red';
+            
+            // Show the error message
+            document.querySelector('#error-message').textContent = "Please enter player names before starting the game.";
+            document.querySelector('#error-message').style.visibility = 'visible';
         }
     };
 
@@ -114,16 +116,23 @@ const GameController = (() => {
         const player2Name = document.querySelector('#player2-name').value;
         const defaultText = "Add name here...";
         
-        if (!player1Name || player1Name === defaultText || !player2Name || player2Name === defaultText) {
-          document.querySelector('#player1-name').classList.add('error');
-          document.querySelector('#player2-name').classList.add('error');
-          document.querySelector('#error-message').textContent = 'Please enter names for both players before starting the game.';
-          document.querySelector('#error-message').style.color = 'red';
-          return;
+        if (!player1Name || player1Name === 'Add name here...' || !player2Name || player2Name === 'Add name here...') {
+            // Change the border color of the input fields to red
+            document.querySelector('#player1-name').style.borderColor = 'red';
+            document.querySelector('#player2-name').style.borderColor = 'red';
+            
+            // Show the error message
+            document.querySelector('#error-message').textContent = "Please enter player names before starting the game.";
+            document.querySelector('#error-message').style.visibility = 'visible';
+            return;
         } else {
-          document.querySelector('#player1-name').classList.remove('error');
-          document.querySelector('#player2-name').classList.remove('error');
-          document.querySelector('#error-message').textContent = '';
+            // Reset the border color of the input fields
+            document.querySelector('#player1-name').style.borderColor = '';
+            document.querySelector('#player2-name').style.borderColor = '';
+        
+            // Hide the error message
+            document.querySelector('#error-message').textContent = "";
+            document.querySelector('#error-message').style.visibility = 'hidden';
         }
     
         player1 = Player(player1Name, 'X');
@@ -147,6 +156,11 @@ const GameController = (() => {
       return { cellCheck, startGame, playTurn };
 })();
 
+Array.from(document.querySelectorAll('.cell')).forEach(cell => {
+    cell.addEventListener('click', GameController.cellCheck);
+});
+
+// Update cell event listeners
 Array.from(document.querySelectorAll('.cell')).forEach(cell => {
     cell.addEventListener('click', GameController.cellCheck);
 });
