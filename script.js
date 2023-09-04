@@ -156,10 +156,6 @@ const GameController = (() => {
       return { cellCheck, startGame, playTurn };
 })();
 
-Array.from(document.querySelectorAll('.cell')).forEach(cell => {
-    cell.addEventListener('click', GameController.cellCheck);
-});
-
 // Update cell event listeners
 Array.from(document.querySelectorAll('.cell')).forEach(cell => {
     cell.addEventListener('click', GameController.cellCheck);
